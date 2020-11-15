@@ -1,1 +1,3 @@
-test
+userid:1{
+level:1
+}
