@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { Client, Message, ReactionManager, GuildEmoji, GuildMember, GuildMemberRoleManager, MessageAttachment } = require('discord.js');
+const { Client } = require('discord.js');
 const sql = require('mssql');
 const config = require("./config.dbconfig.js");
 const client = new Client();
