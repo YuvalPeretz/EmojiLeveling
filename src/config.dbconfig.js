@@ -8,10 +8,6 @@ const config = {
         enableArithAort: true,
         instancename: "YUVAL"
     },
-    dialect: "mssql",
-    dialectOptions: {
-        instanceName: "SQLEXPRESS"
-    },
     port: 1433
 }
 

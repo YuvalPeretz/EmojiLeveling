@@ -8,11 +8,9 @@ const codealongcategories = new Array();
 
 async function updateUserInfo(id, level, username) {
     try {
-        console.log("trying to connect")
+        console.log(config.user)
         let pool = await sql.connect(config);
-        console.log("trying to connect2")
         const { recordset: users } = await pool.request().query(`SELECT * FROM users WHERE id = '${id}'`);
-        console.log("trying to connect3")
         let updated = false;
         users.map(async (user) => {
             if (user.id = id) {
@@ -58,7 +56,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
         updateUserInfo(reaction.message.author.id, level, reaction.message.author.username)
         const channel = client.channels.cache.find(channel => channel.name === "leveling-channel");
         channel.send(`${reaction.message.author.username} just leveled up to level: ${level}!`);
-        console.log(reaction.message.author)
         switch (level) {
             case 3:
                 member.roles.add("776537972732329985");
