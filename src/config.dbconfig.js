@@ -2,6 +2,7 @@ const config = {
     user: "emojilevelsAcc",
     password: "discordbot",
     server: "10.0.0.2",
+    driver: 'tedious',
     database: "EmojiLevelsDB",
     options: {
         trustedconnection: true,
