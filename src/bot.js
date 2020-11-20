@@ -34,11 +34,11 @@ async function getUserLevel(id) {
 }
 
 client.on('ready', async () => {
-    client.channels.cache.map(channel => {
+     client.channels.cache.map(channel => {
         if (channel.type === "text" && channel.parent.name === "CODE ALONG")
             codealongcategories.push(channel.name);
     })
-})
+});
 
 client.on('messageReactionAdd', async (reaction, user) => {
     const { name } = reaction.emoji;
@@ -76,6 +76,6 @@ client.on('messageReactionAdd', async (reaction, user) => {
                 break;
         }
     }
-})
+});
 
 client.login(process.env.DISCORDJS_BOT_TOKEN);
