@@ -40,6 +40,10 @@ client.on('ready', async () => {
     })
 });
 
+client.on('message',message => {
+    
+})
+
 client.on('messageReactionAdd', async (reaction, user) => {
     const { name } = reaction.emoji;
 
