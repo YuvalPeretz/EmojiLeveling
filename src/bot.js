@@ -8,8 +8,11 @@ const codealongcategories = new Array();
 
 async function updateUserInfo(id, level, username) {
     try {
+        console.log("trying to connect")
         let pool = await sql.connect(config);
+        console.log("trying to connect2")
         const { recordset: users } = await pool.request().query(`SELECT * FROM users WHERE id = '${id}'`);
+        console.log("trying to connect3")
         let updated = false;
         users.map(async (user) => {
             if (user.id = id) {
