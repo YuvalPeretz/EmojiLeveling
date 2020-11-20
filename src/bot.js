@@ -35,6 +35,7 @@ async function getUserLevel(id) {
 }
 
 client.on('ready', async () => {
+    console.log(config.user)
      client.channels.cache.map(channel => {
         if (channel.type === "text" && channel.parent.name === "CODE ALONG")
             codealongcategories.push(channel.name);
