@@ -39,7 +39,7 @@ client.on('ready', async () => {
         let pool = await sql.connect(config);
         console.log(await pool.request().query('SELECT @@servername'))
     } catch (error) {
-        console.log(`error:\n ${error}`)
+        console.log(`error:\n  ${error}`)
     }
      client.channels.cache.map(channel => {
         if (channel.type === "text" && channel.parent.name === "CODE ALONG")
