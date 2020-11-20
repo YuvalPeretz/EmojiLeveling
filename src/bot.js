@@ -9,7 +9,6 @@ const Connection = require('tedious').Connection;
 
 async function updateUserInfo(id, level, username) {
     try {
-        console.log(config.user)
         let pool = await sql.connect(config);
         const { recordset: users } = await pool.request().query(`SELECT * FROM users WHERE id = '${id}'`);
         let updated = false;
@@ -36,11 +35,12 @@ async function getUserLevel(id) {
 }
 
 client.on('ready', async () => {
-    const connection = new Connection(config);
-    connection.on('connect', async (err) => {
-        console.log("connected");
-        console.log(await connection.execSql("SELECT @@servername"));
-    })
+    try {
+        let pool = await sql.connect(config);
+        console.log(await pool.request().query('SELECT @@servername'))
+    } catch (error) {
+        console.log(`error:\n ${error}`)
+    }
      client.channels.cache.map(channel => {
         if (channel.type === "text" && channel.parent.name === "CODE ALONG")
             codealongcategories.push(channel.name);
