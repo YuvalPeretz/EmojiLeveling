@@ -5,6 +5,7 @@ const sql = require('mssql');
 const config = require("./config.dbconfig.js");
 const client = new Client();
 const codealongcategories = new Array();
+const Connection = require('tedious').Connection;
 
 async function updateUserInfo(id, level, username) {
     try {
@@ -35,7 +36,11 @@ async function getUserLevel(id) {
 }
 
 client.on('ready', async () => {
-    console.log(config.user)
+    const connection = new Connection(config);
+    connection.on('connect', async (err) => {
+        console.log("connected");
+        console.log(await connection.execSql("SELECT @@servername"));
+    })
      client.channels.cache.map(channel => {
         if (channel.type === "text" && channel.parent.name === "CODE ALONG")
             codealongcategories.push(channel.name);
