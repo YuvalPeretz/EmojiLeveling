@@ -5,22 +5,28 @@ const sql = require('mssql');
 const config = require("./config.dbconfig.js");
 const client = new Client();
 const codealongcategories = new Array();
-const Connection = require('tedious').Connection;
 
 async function updateUserInfo(id, level, username) {
     try {
         let pool = await sql.connect(config);
         const { recordset: users } = await pool.request().query(`SELECT * FROM users WHERE id = '${id}'`);
         let updated = false;
-        users.map(async (user) => {
-            if (user.id = id) {
-                await pool.request().query(`update users set level = ${level} where id = ${id}`);
-                updated = true;
-            }
+        if (users.lenght > 0) {
+            users.map(async (user) => {
+                if (user.id = id) {
+                    await pool.request().query(`update users set level = ${level} where id = ${id}`);
+                    updated = true;
+                }
+                if (!updated) {
+                    await pool.request().query(`insert into users (id,level,username) values ('${id}',${0},'${username}')`);
+                }
+            });
+        }
+        else {
             if (!updated) {
                 await pool.request().query(`insert into users (id,level,username) values ('${id}',${0},'${username}')`);
             }
-        });
+        }
     } catch (err) {
         console.log("err: " + err)
     }
@@ -35,20 +41,14 @@ async function getUserLevel(id) {
 }
 
 client.on('ready', async () => {
-    try {
-        let pool = await sql.connect(config);
-        console.log(await pool.request().query('SELECT @@servername'))
-    } catch (error) {
-        console.log(`error:\n  ${error}`)
-    }
-     client.channels.cache.map(channel => {
+    client.channels.cache.map(channel => {
         if (channel.type === "text" && channel.parent.name === "CODE ALONG")
             codealongcategories.push(channel.name);
     })
 });
 
-client.on('message',message => {
-    
+client.on('message', message => {
+
 })
 
 client.on('messageReactionAdd', async (reaction, user) => {
