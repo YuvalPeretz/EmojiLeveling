@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-const { Client } = require('discord.js');
+const { Client, CategoryChannel } = require('discord.js');
 const sql = require('mssql');
 const config = require("./config.dbconfig.js");
 const client = new Client();
@@ -11,10 +11,10 @@ async function updateUserInfo(id, level, username) {
         let pool = await sql.connect(config);
         const { recordset: users } = await pool.request().query(`SELECT * FROM users WHERE id = '${id}'`);
         let updated = false;
-        if (users.lenght > 0) {
+        if(Object.keys(users).length > 0) {
             users.map(async (user) => {
                 if (user.id = id) {
-                    await pool.request().query(`update users set level = ${level} where id = ${id}`);
+                    await pool.request().query(`update users set level = ${level} where id = '${id}'`);
                     updated = true;
                 }
                 if (!updated) {
@@ -22,18 +22,15 @@ async function updateUserInfo(id, level, username) {
                 }
             });
         }
-        else {
-            if (!updated) {
-                await pool.request().query(`insert into users (id,level,username) values ('${id}',${0},'${username}')`);
-            }
-        }
+        else
+            await pool.request().query(`insert into users (id,level,username) values ('${id}',${0},'${username}')`);
     } catch (err) {
         console.log("err: " + err)
     }
 }
 
 async function getUserLevel(id) {
-    let pool = await sql.connect(config);
+    let pool = await sql.connect(config)
     const { recordset: users } = await pool.request().query(`SELECT level FROM users WHERE id = '${id}'`);
     if (users[0] !== undefined)
         return parseInt(users[0].level)
@@ -45,15 +42,12 @@ client.on('ready', async () => {
         if (channel.type === "text" && channel.parent.name === "CODE ALONG")
             codealongcategories.push(channel.name);
     })
+
+    
 });
-
-client.on('message', message => {
-
-})
 
 client.on('messageReactionAdd', async (reaction, user) => {
     const { name } = reaction.emoji;
-
     if (!reaction.message.guild) return;
     if (reaction.message.author.bot) return;
     const level = await getUserLevel(reaction.message.author.id).then(function (v) { return parseInt(v) }) + 1;
@@ -88,4 +82,5 @@ client.on('messageReactionAdd', async (reaction, user) => {
     }
 });
 
+//client.login("Nzc2NTU3NjUxNjQzNDY1NzU5.X62nqw.-sqMlSdyQAMcT_Eg8sXL-gq5UPo");
 client.login(process.env.DISCORDJS_BOT_TOKEN);
